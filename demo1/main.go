@@ -10,14 +10,14 @@ import (
 
 func handler(w http.ResponseWriter, r *http.Request) {
 	log.Printf(
-		`{"timestamp":"%s","method":"%s","url":"%s","remote":"%s"}`+"\n",
+		`{"timestamp":%q,"method":%q,"url":%q,"remote":%q}`+"\n",
 		time.Now().UTC().Format(time.RFC3339),
 		r.Method,
 		r.URL,
 		r.RemoteAddr,
 	)
 	magicWord := os.Getenv("MAGIC_WORD")
-	fmt.Fprintf(w, "The magic word is %q", magicWord)
+	fmt.Fprintf(w, "The secret keyword is %q", magicWord)
 }
 
 func init() {

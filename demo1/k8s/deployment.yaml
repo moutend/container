@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: demo
-          image: demo1:hello-secret-env
+          image: demo1:hello-secret-env-v2
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8888

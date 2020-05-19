@@ -19,7 +19,7 @@ var (
 func handler(w http.ResponseWriter, r *http.Request) {
 	var count int
 
-	row := db.QueryRow(`SELECT COUNT(id) FROM foo;`)
+	row := db.QueryRow(`SELECT COUNT(id) FROM bar;`)
 	err := row.Scan(&count)
 
 	if err != nil {
@@ -44,7 +44,7 @@ func init() {
 }
 
 func main() {
-	source := fmt.Sprintf(
+	dsn := fmt.Sprintf(
 		"%s:%s@tcp(%s:%s)/%s?parseTime=true",
 		os.Getenv("MYSQL_USER"),
 		os.Getenv("MYSQL_PASSWORD"),
@@ -53,9 +53,17 @@ func main() {
 		os.Getenv("MYSQL_DATABASE"),
 	)
 
+	log.Printf(
+		`{"severity":"DEBUG","time":%q,"message":"Connecting %s"}`,
+		time.Now().UTC().Format(time.RFC3339Nano),
+		dsn,
+	)
+
+	time.Sleep(10 * time.Second)
+
 	var err error
 
-	db, err = sql.Open("mysql", source)
+	db, err = sql.Open("mysql", dsn)
 
 	if err != nil {
 		log.Fatal(err)
